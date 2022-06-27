@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- id="객체명" class="타입" -->
+	<bean id="c1" class="step01.model.domain.Car" scope="prototype">
+	<!-- Car c1 = new Car(51, "busan")  -->
+		<constructor-arg name="carNo" value="51"/>
+		<constructor-arg name="carName">
+			<value>busan</value>
+		</constructor-arg>
+	</bean>
+
+	<!-- Setter Injection -->
+	<bean id="p1" class="step01.model.domain.People">
+		<property name="name" value="spring"/>
+		<property name="age" value="29"/>
+		<property name="myCar" ref="c1"/>
+		<!-- <property name="myCar" ref="c2"/> -->  <!-- Exception 발생 -->
+	</bean>
+	
+	<!-- Constructor Injection -->
+	<bean id="p2" class="step01.model.domain.People">
+		<constructor-arg name="name" value="spring2"/>
+		<constructor-arg name="age" value="24"/>
+		<constructor-arg name="myCar" ref="c1"/>
+	</bean>
+</beans>
