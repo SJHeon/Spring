@@ -57,8 +57,8 @@ public class APIController {
 	public String GetFour() throws Exception {
 		if (true) {
 			throw new Exception("URL Exception");
-		}
-		return null;
+		} else
+			return null;
 	}
 
 	@ExceptionHandler
