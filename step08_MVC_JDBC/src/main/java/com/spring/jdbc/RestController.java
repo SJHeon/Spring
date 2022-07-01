@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import com.spring.service.DeptServiceImpl;
 
 @org.springframework.web.bind.annotation.RestController
 // @Controller + @Responsebody
+//@RequestMapping("/api")
 public class RestController {
 	@Autowired
 	private DeptServiceImpl deptService;
@@ -45,5 +47,30 @@ public class RestController {
 	public void insertDeptForm(@ModelAttribute Dept dept) { // 기본 form형태 데이터 받는것, 기본값이다.
 		System.out.println(dept);
 		deptService.insertDept(dept);
+	}
+
+	@GetMapping(value = "/api/no-proxy")
+	public String noProxy() {
+		System.out.println("/api/no-proxy");
+		return "no-proxy";
+	}
+
+	@GetMapping(value = "/api/proxy")
+	public String onProxy() {
+		System.out.println("/api/proxy");
+		return "proxy";
+	}
+
+	@GetMapping(value = "/api/no-cors")
+	public String noCors() {
+		System.out.println("/api/no-cors");
+		return "api/no-cors";
+	}
+
+	@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4000" })
+	@GetMapping(value = "/api/cors")
+	public String cors() {
+		System.out.println("/api/cors");
+		return "api/cors";
 	}
 }

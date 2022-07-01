@@ -20,7 +20,7 @@ public class DeptController {
 	public String home(Locale locale, Model model) {
 //		System.out.println(deptService.getDeptByDeptno(10));
 //		System.out.println(deptService.getDeptNameByDeptno(10));
-		System.out.println(deptService.getDeptMap(10));
+//		System.out.println(deptService.getDeptMap(10));
 //		System.out.println(deptService.getAllDepts());
 //		System.out.println(deptService.getAllDeptsMap());
 //		deptService.insertDept(new Dept(50, "PROGRMMING", "SEOUL"));

@@ -6,7 +6,7 @@ session="false" %>
   </head>
   <body>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <h1>¿DB?</h1>
+    <h1>DB Page</h1>
 
     <script>
       //   (JSON) INSERT "/api/deptjson" => deptno : 90, dname : FRONTEND, loc : JEJU
