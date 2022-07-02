@@ -33,7 +33,9 @@ public interface DeptMapper {
 	// update : where deptno = 50 and dname = "PROGRAMMING" -> loc : MOON
 	public void updateDeptByDeptnoAndDname(Map data);
 
-	public void updateByDeptno(int deptno, Map map);
+	public void updateDeptByDeptno(Dept dept);
 
 	public void deleteDept(String loc);
+
+	public void deleteDept(int deptno);
 }

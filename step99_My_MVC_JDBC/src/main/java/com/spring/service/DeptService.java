@@ -34,4 +34,6 @@ public interface DeptService {
 	public void updateDeptByDeptno(Dept dept);
 
 	public void deleteDept(String loc);
+
+	public void deleteDept(int deptno);
 }

@@ -52,13 +52,18 @@ public class DeptServiceImpl implements DeptService {
 	}
 
 	@Override
-	public void updateDeptByDeptno(int deptno, Map data) {
-		deptMapper.updateByDeptno(deptno, data);
+	public void updateDeptByDeptno(Dept dept) {
+		deptMapper.updateDeptByDeptno(dept);
 	}
 
 	@Override
 	public void deleteDept(String loc) {
 		deptMapper.deleteDept(loc);
+	}
+
+	@Override
+	public void deleteDept(int deptno) {
+		deptMapper.deleteDept(deptno);
 	}
 
 }

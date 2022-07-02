@@ -53,8 +53,12 @@
 		UPDATE DEPT SET dname = #{dname}, loc = #{loc} WHERE deptno = #{deptno}
 	</update>
 	
-	<delete id="deleteDept" parameterType="String">
+	<delete id="deleteDept1" parameterType="String">
 		DELETE FROM DEPT WHERE loc = #{loc}
+	</delete>
+	
+	<delete id="deleteDept" parameterType="_int">
+		DELETE FROM DEPT WHERE deptno = #{deptno}
 	</delete>
 	
 </mapper>
