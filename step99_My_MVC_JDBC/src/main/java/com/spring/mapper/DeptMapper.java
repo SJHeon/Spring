@@ -13,7 +13,7 @@ public interface DeptMapper {
 	public String getDeptNameByDeptno(int deptno);
 
 	// 객체
-	public Dept getDeptByDeptno(int deptno);
+	public List<Dept> getDeptByDeptno(int deptno);
 
 	// HashMap
 	public HashMap<String, Object> getDeptMap(int deptno);

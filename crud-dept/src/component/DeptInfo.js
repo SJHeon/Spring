@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 
 function DeptInfo() {
+  const pageTitle = "http://localhost3000";
   const [data, setData] = useState([]);
 
   const insertDept = () => {
@@ -14,21 +15,23 @@ function DeptInfo() {
         { deptno: deptno.value, dname: dname.value, loc: loc.value },
         { headers: { "Content-Type": `application/json` } }
       )
-      .then((res) => console.log(res));
+      .then((res) => {
+        window.history.pushState("", pageTitle, "/");
+      });
   };
 
   const getAllDepts = async () => {
     await axios.get("/api/dept").then((res) => {
-      console.log(res.data);
       setData(res.data);
+      window.history.pushState("", pageTitle, "/");
     });
   };
 
   const selectDeptByDeptno = () => {
     const deptno = document.getElementById("deptno_select");
     axios.get("/api/dept/" + deptno.value).then((res) => {
-      console.log(res.data);
-      // setData(res.data);
+      setData(res.data);
+      window.history.pushState("", pageTitle, `/${deptno.value}`);
     });
   };
 
@@ -42,14 +45,16 @@ function DeptInfo() {
         { deptno: deptno.value, dname: dname.value, loc: loc.value },
         { headers: { "Content-Type": `application/json` } }
       )
-      .then((res) => console.log(res.data));
+      .then((res) => {
+        window.history.pushState("", pageTitle, `/${deptno.value}`);
+      });
   };
 
   const deleteDeptByDeptno = () => {
     const deptno = document.getElementById("deptno_delete");
-    axios
-      .delete("api/dept/" + deptno.value)
-      .then((res) => console.log(res.data));
+    axios.delete("api/dept/" + deptno.value).then((res) => {
+      window.history.pushState("", pageTitle, `/${deptno.value}`);
+    });
   };
 
   return (
@@ -80,6 +85,7 @@ function DeptInfo() {
       <button onClick={deleteDeptByDeptno}>DELETE</button>
       <hr />
       <div>
+        <h3>RESULT SECTION</h3>
         {data.map((dept) => {
           return (
             <div key={dept.deptno}>

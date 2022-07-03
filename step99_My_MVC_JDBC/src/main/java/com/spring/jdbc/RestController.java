@@ -41,7 +41,7 @@ public class RestController {
 
 	// select By Deptno
 	@GetMapping(value = "/dept/{deptno}")
-	public Dept getDeptByDeptno(@PathVariable int deptno) {
+	public List<Dept> getDeptByDeptno(@PathVariable int deptno) {
 		System.out.println(deptno);
 		System.out.println(deptService.getDeptByDeptno(deptno));
 		return deptService.getDeptByDeptno(deptno);
