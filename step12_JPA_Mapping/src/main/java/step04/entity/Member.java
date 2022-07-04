@@ -24,6 +24,10 @@ public class Member {
 	private Integer age;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	/*
+	 * - 개별 select 실행 - 실제 데이터를 필요로 하는 시점에만 select 실행 - 주의사항 : toString() 사용하는 경우,
+	 * team 값을 반환하는 로직이 포함되어 있다면, team과 관련된 select 구문이 자동으로 실행 된다
+	 */
 	@JoinColumn(name = "team_id")
 	private Team team;
 
