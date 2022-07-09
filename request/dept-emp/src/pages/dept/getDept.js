@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Pagination from "../Pagination";
+import DeptList from "./DeptList";
+import { insertDept } from "../../api/deptApi/createDeptRequest";
 
 function DeptInfo() {
   const [data, setData] = useState([]);
-  const [check, setcheck] = useState(false);
+  const [check, setCheck] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPerPage, setDataPerPage] = useState(5);
 
   useEffect(() => {
     getAllDepts();
   }, [check]);
 
-  const insertDept = () => {
-    const deptno = document.getElementById("deptno_insert");
-    const dname = document.getElementById("dname_insert");
-    const loc = document.getElementById("loc_insert");
-    axios
-      .post(
-        "/api/dept",
-        { deptno: deptno.value, dname: dname.value, loc: loc.value },
-        { headers: { "Content-Type": `application/json` } }
-      )
-      .then(() => setcheck(!check));
-  };
+  // const insertDept = () => {
+  //   const deptno = document.getElementById("deptno_insert");
+  //   const dname = document.getElementById("dname_insert");
+  //   const loc = document.getElementById("loc_insert");
+  //   axios
+  //     .post(
+  //       "/api/dept",
+  //       { deptno: deptno.value, dname: dname.value, loc: loc.value },
+  //       { headers: { "Content-Type": `application/json` } }
+  //     )
+  //     .then(() => setCheck(!check));
+  // };
 
   const getAllDepts = async () => {
     await axios.get("/api/depts").then((res) => {
@@ -47,54 +52,42 @@ function DeptInfo() {
     );
   };
 
-  const deleteDeptByDeptno = async (deptno) => {
-    await axios.delete("api/dept/" + deptno);
+  const lastPage = currentPage * dataPerPage;
+  const firstPage = lastPage - dataPerPage;
+  const currentData = (posts) => {
+    console.log("1111");
+    console.log(posts);
+    let currentData = 0;
+    currentData = posts.slice(firstPage, lastPage);
+    return currentData;
   };
 
   return (
     <div>
       {console.log(data)}
       <h2>REQUEST DEPT INFO</h2>
-      <h3>RESULT SECTION</h3>
-      <table border={1}>
-        <thead>
-          <tr>
-            <th>deptno</th>
-            <th>dname</th>
-            <th>loc</th>
-            <th>
-              <button onClick={() => updateDeptByDeptno}>UPDATE</button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((dept) => {
-            return (
-              <tr key={dept.deptno}>
-                <th>{dept.deptno}</th>
-                <th>{dept.dname}</th>
-                <th>{dept.loc}</th>
-                <th>
-                  <button
-                    onClick={async () => {
-                      await deleteDeptByDeptno(dept.deptno);
-                      setcheck(!check);
-                    }}
-                  >
-                    DELETE
-                  </button>
-                </th>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
       <hr />
       <h3>INSERT DEPT</h3>
       <input id="deptno_insert" type="text" placeholder="deptno" />
       <input id="dname_insert" type="text" placeholder="dname" />
       <input id="loc_insert" type="text" placeholder="loc" />
-      <input type="button" value="CREATE" onClick={insertDept} />
+      <input
+        type="button"
+        value="CREATE"
+        onClick={async () => {
+          await insertDept();
+          setCheck(!check);
+          console.log(check);
+        }}
+      />
+      <hr />
+      <h3>RESULT SECTION</h3>
+      <DeptList data={currentData(data)} check={check} setCheck={setCheck} />
+      <Pagination
+        dataPerPage={dataPerPage}
+        totalData={data.length}
+        setCurrentPage={setCurrentPage}
+      />
       <hr />
       <h3>SELECT DEPT</h3>
       <input id="deptno_select" type="text" placeholder="deptno"></input>
@@ -105,7 +98,6 @@ function DeptInfo() {
       <input id="dname_update" type="text" placeholder="dname" />
       <input id="loc_update" type="text" placeholder="loc" />
       <button onClick={updateDeptByDeptno}>UPDATE</button>
-      <hr />
     </div>
   );
 }

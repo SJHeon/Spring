@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import EmpList from "./EmpList";
+import Pagination from "../Pagination";
 
 function EmpInfo() {
-  const pageTitle = "http://localhost3000";
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [dataPerPage, setDataPerPage] = useState(10);
 
   useEffect(() => {
     getAllEmps();
@@ -19,30 +22,25 @@ function EmpInfo() {
     const comm = document.getElementById("comm_insert");
     const deptno = document.getElementById("deptno_insert");
 
-    axios
-      .post(
-        "/api/emp",
-        {
-          empno: empno.value,
-          ename: ename.value,
-          job: job.value,
-          mgr: mgr.value,
-          hireDate: hireDate.value,
-          sal: sal.value,
-          comm: comm.value,
-          dept: { deptno: deptno.value },
-        },
-        { headers: { "Content-Type": `application/json` } }
-      )
-      .then((res) => {
-        window.history.pushState("", pageTitle, "/emp");
-      });
+    axios.post(
+      "/api/emp",
+      {
+        empno: empno.value,
+        ename: ename.value,
+        job: job.value,
+        mgr: mgr.value,
+        hireDate: hireDate.value,
+        sal: sal.value,
+        comm: comm.value,
+        dept: { deptno: deptno.value },
+      },
+      { headers: { "Content-Type": `application/json` } }
+    );
   };
 
   const getAllEmps = async () => {
     await axios.get("/api/emps").then((res) => {
       setData(res.data);
-      window.history.pushState("", pageTitle, "/emp");
     });
   };
 
@@ -50,7 +48,6 @@ function EmpInfo() {
     const empno = document.getElementById("empno_select");
     axios.get("/api/emp/" + empno.value).then((res) => {
       setData([res.data]);
-      window.history.pushState("", pageTitle, `/emp/${empno.value}`);
     });
   };
 
@@ -63,31 +60,33 @@ function EmpInfo() {
     const sal = document.getElementById("sal_update");
     const comm = document.getElementById("comm_update");
     const deptno = document.getElementById("deptno_update");
-    axios
-      .put(
-        "api/emp/" + empno.value,
-        {
-          empno: empno.value,
-          ename: ename.value,
-          job: job.value,
-          mgr: mgr.value,
-          hireDate: hireDate.value,
-          sal: sal.value,
-          comm: comm.value,
-          dept: { deptno: deptno.value },
-        },
-        { headers: { "Content-Type": `application/json` } }
-      )
-      .then((res) => {
-        window.history.pushState("", pageTitle, `/emp/${empno.value}`);
-      });
+    axios.put(
+      "api/emp/" + empno.value,
+      {
+        empno: empno.value,
+        ename: ename.value,
+        job: job.value,
+        mgr: mgr.value,
+        hireDate: hireDate.value,
+        sal: sal.value,
+        comm: comm.value,
+        dept: { deptno: deptno.value },
+      },
+      { headers: { "Content-Type": `application/json` } }
+    );
   };
 
   const deleteEmpByEmpno = () => {
     const empno = document.getElementById("empno_delete");
-    axios.delete("api/emp/" + empno.value).then((res) => {
-      window.history.pushState("", pageTitle, `/emp/${empno.value}`);
-    });
+    axios.delete("api/emp/" + empno.value);
+  };
+
+  const lastPage = currentPage * dataPerPage;
+  const firstPage = lastPage - dataPerPage;
+  const currentData = (data) => {
+    let currentData = 0;
+    currentData = data.slice(firstPage, lastPage);
+    return currentData;
   };
 
   return (
@@ -95,6 +94,15 @@ function EmpInfo() {
       {console.log(data)}
       <h2>REQUEST EMP INFO</h2>
       <hr />
+      <div>
+        <h3>RESULT SECTION</h3>
+        <EmpList data={currentData(data)} />
+        <Pagination
+          dataPerPage={dataPerPage}
+          totalData={data.length}
+          setCurrentPage={setCurrentPage}
+        />
+      </div>
       <h3>INSERT EMP</h3>
       <input id="empno_insert" type="text" placeholder="empno" />
       <input id="ename_insert" type="text" placeholder="ename" />
@@ -130,22 +138,6 @@ function EmpInfo() {
       <h3>DELETE EMP</h3>
       <input id="empno_delete" type="text" placeholder="empno"></input>
       <button onClick={deleteEmpByEmpno}>DELETE</button>
-      <hr />
-      <div>
-        <h3>RESULT SECTION</h3>
-        {data.map((emp) => {
-          return (
-            <div key={emp.empno}>
-              <div>
-                empno : {emp.empno} ename : {emp.ename} job : {emp.job} mgr :
-                {emp.mgr} hiredate : {emp.hireDate} sal : {emp.sal} comm :
-                {emp.comm} deptno : {emp.dept != null ? emp.dept.deptno : null}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      <div></div>
     </div>
   );
 }
