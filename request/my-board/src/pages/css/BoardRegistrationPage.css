@@ -1,0 +1,31 @@
+.Registration {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+.container {
+  display: flex;
+  box-shadow: 0 2px 15px rgba(64, 64, 64, 0.7);
+  border: solid #723888;
+}
+
+.input {
+  height: 100px;
+  width: 400px;
+  text-align: justify;
+}
+
+.regist {
+  background-color: #723888;
+  color: rgb(255, 255, 255);
+  padding: 10px 20px;
+  margin-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+div {
+  margin-top: 10px;
+}
